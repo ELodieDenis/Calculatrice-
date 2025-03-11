@@ -1,0 +1,153 @@
+*{
+    padding: 0;
+    margin: 0;
+    gap: 0;
+    /* background-color: black; */
+}
+
+.base_calculatrice{
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+    height: 85vh;
+    justify-content: center;
+    width: 100%;
+}
+
+table{
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(40, 25, 118);
+    width: 450px;
+    border-spacing: 20px;
+    font-size: 1.8rem;
+}
+
+/* tr de l'input */
+tr:first-child td:first-child{
+    position: relative;
+    border: none;
+    height: 7rem;
+}
+
+.td_input{
+    /* display: flex; */
+    /* width: 100%;
+    height: 50%; */
+    position: absolute;
+}
+
+input{
+    position: relative;
+    width: 100%;
+    height: 50%;
+    border: none;
+    font-weight: 700;
+    font-size: xx-large;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+/* bouton effacer */
+tr:nth-child(2) td:nth-child(1){
+    border: none;
+    position: relative;
+}
+
+/* td image bouton effacer */
+td.arrow_delete{
+    background-color: white;
+    height: 2rem;
+    position: relative;
+}
+
+/* image bouton effacer */
+img{
+    display: flex;
+    z-index: 10; 
+    height: 25px;
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    align-items: center;
+    bottom: 5px;
+}
+
+/* bouton C (tout supprimer) */
+tr:nth-child(3) td:nth-child(1) {
+    color: red;
+
+}
+
+/* bouton d'opération  */
+tr:nth-child(3) td:nth-child(2),
+tr:nth-child(3) td:nth-child(3),
+tr:nth-child(3) td:nth-child(4),
+tr:nth-child(4) td:nth-child(4),
+tr:nth-child(5) td:nth-child(4),
+tr:nth-child(6) td:nth-child(4),
+tr:nth-child(7) td:nth-child(4) {
+    color: green;
+    font-weight: bold;
+}
+
+.number:hover{
+    background-color: rgb(19, 10, 63) ;
+}
+
+/* tous les td sauf le input */
+td:not(.arrow_delete, .equal){    
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 50%;
+    text-align: center;
+    width: 10%;
+    height: 10%;
+    color: white;
+}
+
+/* le signe égal */
+.equal{
+    border: 1px solid rgb(255, 255, 255);
+    text-align: center;
+    width: 10%;
+    height: 10%;
+    color: white;
+}
+
+.Addition,
+.Soustraction,
+.Multiplication,
+.Division{
+    display: none;
+}
+
+
+@media screen and (max-width: 600px) {
+    table{
+        height: 50vh;
+        width: 300px;
+        border-spacing: 15px;
+    }
+
+    tr:first-child td:first-child{
+        height: 3rem;
+    }
+
+    td.arrow_delete{
+        height: 1rem;
+    }
+
+    td:not(.arrow_delete) {
+        width: 25px;
+        height: 20px;
+    }
+}
+
+
+
+
+
+
+
+
