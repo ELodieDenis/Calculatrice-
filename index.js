@@ -51,8 +51,12 @@ numbers.forEach((number) => {
   });
 });
 
+// --------------------------------------------------
+
 function boutonEgal() {
   equalBtn.addEventListener("mousedown", () => {
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     const inputFinalValue = inputFinal.value;
 
     // Récupération du dernier nombre entré
@@ -105,6 +109,9 @@ function boutonEgal() {
         default:
           return;
       }
+      const final = inputFinal.value.match(/\d+|\D/g);
+      const final1 = parseFloat(final[final.length - 1]);
+      const final2 = final[final.length - 2];
     }
 
     inputFinal.value = inputFirst.value;
@@ -116,6 +123,73 @@ function boutonEgal() {
 function allOperations1() {
   operations.forEach((operation) => {
     operation.addEventListener("mousedown", () => {
+      const inFv = inputFinal.value;
+
+      const operande = [];
+      const operator = [];
+
+      const prioOperator = {
+        "+": 1,
+        "-": 1,
+        "*": 2,
+        "/": 2,
+      };
+
+      const inFvm = inFv.match(/\d+|\D/g) || [];
+
+      for (let unit of inFvm) {
+        if (!isNaN(unit) && unit.trim() !== "") {
+          operande.push(parseFloat(unit));
+          continue;
+        }
+        while (
+          operator.length > 0 &&
+          prioOperator[operator[operator.length - 1]] >= prioOperator[unit]
+        ) {
+          operande.push(operator.pop());
+        }
+
+        operator.push(unit);
+      }
+      while (operator.length > 0) {
+        operande.push(operator.pop());
+      }
+      console.log(`EXPRESSION POSTFIXEE : ${operande.join(" ")}`);
+
+      function evalPostfixee(postfixExpr) {
+        const stack = [];
+
+        for (let token of postfixExpr) {
+          if (!isNaN(token)) {
+            stack.push(parseFloat(token));
+          } else {
+            let b = stack.pop();
+            let a = stack.pop();
+
+            switch (token) {
+              case "+":
+                stack.push(a + b);
+                break;
+              case "-":
+                stack.push(a - b);
+                break;
+              case "*":
+                stack.push(a * b);
+                break;
+              case "/":
+                stack.push(a / b);
+                break;
+              default:
+                throw new Error(`Opérateur inconnu : ${token}`);
+            }
+          }
+        }
+        return stack.pop(); // Résultat final
+      }
+      const resultat = evalPostfixee();
+      console.log(`RESULTAT FINAL ${resultat}`);
+
+      // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       const inputFinalValue = inputFinal.value;
       const inputFirstValue = inputFirst.value;
 
@@ -176,55 +250,10 @@ function allOperations1() {
 allOperations1();
 boutonEgal();
 
-// fonction au clique sur un signe d'opération SANS le signe égal
-// function allOperations() {
-//   operations.forEach((operation) => {
-//     operation.addEventListener("mousedown", () => {
-//       const signeOperation = inputFinal.value;
-//       const lastOperation = signeOperation[signeOperation.length - 1]; //prendre le dernier caractère (POUR le pourcentage)
-//       const splitInputFinal = inputFinal.value.split(/[\+\-\*\/\%]/);
-//       const lengthInputFirst = splitInputFinal[splitInputFinal.length - 2];
-//       const regex = /[\+\-\*\/]/g;
-//       const regexValid = signeOperation.match(regex);
-//       const validSigneOperation = regexValid[regexValid.length - 2];
-
-//       if (inputFinal.value != "" && inputFirst.value == "") {
-//         // lastOperation = operation.id;
-//         inputFirst.value = inputFinal.value.slice(0, -1);
-//       } else if (
-//         inputFinal.value != "" &&
-//         inputFirst.value != "" &&
-//         lastOperation === "%"
-//       ) {
-//         // inputFinal.value = parseFloat(inputFirst.value) - parseFloat(lengthInputFirst) ;
-//         console.log(lengthInputFirst);
-//         console.log("pourcentage utilisée en dernier");
-//       } else if (inputFinal.value != "" && inputFirst.value != "") {
-//         console.log(validSigneOperation);
-//         if (validSigneOperation === "+") {
-//           inputFirst.value =
-//             parseFloat(inputFirst.value) + parseFloat(lengthInputFirst);
-//           console.log(lengthInputFirst);
-//         } else if (validSigneOperation === "-") {
-//           inputFirst.value =
-//             parseFloat(inputFirst.value) - parseFloat(lengthInputFirst);
-//         } else if (validSigneOperation === "*") {
-//           inputFirst.value =
-//             parseFloat(inputFirst.value) * parseFloat(lengthInputFirst);
-//         } else if (validSigneOperation === "/") {
-//           inputFirst.value =
-//             parseFloat(inputFirst.value) / parseFloat(lengthInputFirst);
-//         }
-//       }
-//     });
-//   });
-// }
-
-// pour utiliser le % après un long calcul (ex: 150-3*2-6%)
-// pourcentage ne fonctionne que avec le - (ex: 256+98-8%) et pas avec les autres signes d'opération
 // permettre de pourvoir continuer le calcul après avoir utiliser un % et en ayant click sur egal
 // appliquer parenthèse
 // mettre regle de priorité aux parenthèses
 // pourvoir diffocier l'ouverture et la fermeture des parenthèses
 // mettre animation swipe vers le haut du inputFirst vers le inputFinal
 //  mettre règle de priorité si il y une * ou / dans un calcul
+// si il y a déjà un signe d'opération et que l'utilisateur clique sur un autre signe d'opération, changer le signe, mais ne pas l'ajouter après l'autre (ex : 12+-   ----> 12-)
