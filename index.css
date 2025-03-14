@@ -92,7 +92,10 @@ tr:nth-child(7) td:nth-child(4) {
     font-weight: bold;
 }
 
-.number:hover{
+.number:hover,
+.equal:hover,
+.parenthese:hover,
+.delete:hover{
     background-color: rgb(19, 10, 63) ;
 }
 
