@@ -25,17 +25,10 @@ const imgArrowDelete = document.querySelector(".img_arrow_delete");
 
 // tous les signes d'opération
 const operations = document.querySelectorAll(".operation");
+console.log(operations);
 
 // bouton pourcentage
 const pourcentage = document.querySelector(".pourcentage");
-
-// variable pour stocket l'opération cliquée
-let lastOperation = "";
-
-// stocker première valeur de inputFinal avant calcul
-let firstValueBeforeResult = "";
-
-let resultatMatch;
 
 // -------------------------------------------------------------------------------------------------------------
 
@@ -64,12 +57,22 @@ parenthClose.addEventListener("mousedown", () => {
 numbers.forEach((number) => {
   number.addEventListener("mousedown", () => {
     inputFinal.value += number.textContent;
+
+    // si nombres de chiffres supérieur à 20 dans le inputFinal on stop
+    const lengthInputFinal = inputFinal.value.length;
+    console.log(lengthInputFinal);
+    if (lengthInputFinal >= 20) {
+      inputFinal.value = inputFinal.value.slice(0, 19);
+      alert("Impossible de saisir plus de 20 chiffres");
+    }
   });
 });
 
 // --------------------------------------------------
-function evalPostfixee() {
-  const inFv = inputFinal.value;
+
+// fonction pour trouver l'expression postfixée de l'expression infixée
+function expressionPostfixee(inFv) {
+  inFv = inputFinal.value;
   console.log(`EXPRESSION INFIXEE : ${inFv}`);
 
   const operande = [];
@@ -128,11 +131,18 @@ function evalPostfixee() {
 
   console.log(`EXPRESSION POSTFIXEE : ${operande.join(" ")}`);
   const resulInFvm = operande;
+  return resulInFvm;
+}
+
+// ---------------------------------------------------------
+// fonction qui permet de convertir l'expression postfixée en résultat réel
+function evalPostfixee() {
+  const resulInFvm1 = expressionPostfixee(inputFinal.value);
 
   const stack = [];
 
   // boucle pour les éléments présents dans l'expression finale
-  for (let token of resulInFvm) {
+  for (let token of resulInFvm1) {
     console.log(`Stack avec pop : ${stack}`);
     console.log(`Token avec pop : ${token}`);
 
@@ -189,72 +199,18 @@ function evalPostfixee() {
 
 function boutonEgal() {
   equalBtn.addEventListener("mousedown", () => {
+    // expressionPostfixee();
     evalPostfixee();
   });
 }
 
-// fonction au clique sur un signe d'opération SANS ke signe égal
-// function allOperations1() {
-//   operations.forEach((operation) => {
-//     operation.addEventListener("mousedown", () => {
-//       const inputFinalValue = inputFinal.value;
-//       const inputFirstValue = inputFirst.value;
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    console.log("La touche Entrée a été pressée !");
+    evalPostfixee();
+  }
+});
 
-//       // prendre le dernier nombre entré
-//       const splitInputFinal = inputFinalValue.split(/[\+\-\*\/]/);
-//       const lastNumber = splitInputFinal[splitInputFinal.length - 2];
-
-//       // Récupération du dernier opérateur utilisé (hors %)
-//       const operators = inputFinalValue.match(/[\+\-\*\/]/g);
-//       const lastOperator = operators.length
-//         ? operators[operators.length - 2]
-//         : null;
-
-//       // Vérifier si le dernier caractère est un %
-//       const lastChar = inputFinalValue.slice(-1) === "%";
-
-//       if (!inputFinalValue) {
-//         alert("aucune donnée rentrée");
-//         return;
-//       }
-
-//       if (inputFinalValue && !inputFirstValue) {
-//         inputFirst.value = inputFinalValue.slice(0, -1);
-//       } else if (lastChar) {
-//         console.log("pourcentage utilisée");
-//       } else if (inputFirstValue && lastOperator) {
-//         switch (lastOperator) {
-//           case "+":
-//             inputFirst.value =
-//               parseFloat(inputFirst.value) + parseFloat(lastNumber);
-//             break;
-
-//           case "-":
-//             inputFirst.value =
-//               parseFloat(inputFirst.value) - parseFloat(lastNumber);
-//             break;
-
-//           case "*":
-//             inputFirst.value =
-//               parseFloat(inputFirst.value) * parseFloat(lastNumber);
-//             break;
-
-//           case "/":
-//             inputFirst.value =
-//               parseFloat(inputFirst.value) / parseFloat(lastNumber);
-//             break;
-
-//           default:
-//             alert("Opérateur non reconnu.");
-//             return;
-//         }
-//       }
-//     });
-//   });
-// }
-
-// allOperations();
-// allOperations1();
 boutonEgal();
 
 // si il n'y a plus de place dans le input faire décaler le calcul

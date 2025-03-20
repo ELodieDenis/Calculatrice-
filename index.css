@@ -45,6 +45,8 @@ input{
     font-weight: 700;
     font-size: xx-large;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: right;
+    overflow-x: auto;
 }
 
 
@@ -97,6 +99,10 @@ tr:nth-child(7) td:nth-child(4) {
 .parenthese:hover,
 .delete:hover{
     background-color: rgb(19, 10, 63) ;
+}
+
+.operation{
+    color: green;
 }
 
 /* tous les td sauf le input */
