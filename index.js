@@ -35,7 +35,7 @@ const pourcentage = document.querySelector(".pourcentage");
 // fonction au click sur "remove" tous le input est supprimé
 remove.addEventListener("mousedown", () => {
   inputFinal.value = "";
-  inputFirst.value = "";
+  // inputFirst.value = "";
 });
 
 //fonction au clique sur imgArrowDelete supprimer dernier chiffre dans input
@@ -188,9 +188,9 @@ function evalPostfixee() {
   const finalResultat = stack.pop();
   console.log(`RESULTAT FINAL : ${finalResultat}`);
 
-  inputFirst.value = Math.round(finalResultat * 10000) / 10000; // arrondi à 4 chiffres après la virgule
-  inputFinal.value = inputFirst.value;
-  inputFirst.value = "";
+  inputFinal.value = Math.round(finalResultat * 10000) / 10000; // arrondi à 4 chiffres après la virgule
+  // inputFinal.value = inputFirst.value;
+  // inputFirst.value = "";
 
   return finalResultat;
 }
